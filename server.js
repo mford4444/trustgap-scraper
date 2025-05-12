@@ -9,15 +9,14 @@ app.post('/scrape', async (req, res) => {
     const { crdNumber } = req.body;
     if (!crdNumber) return res.status(400).json({ error: 'Missing crdNumber' });
 
+    console.log(`Received scrape request for CRD: ${crdNumber}`);
+
     const result = await scrapeBrokerCheck(crdNumber);
+
+    console.log('Scrape successful:', result);
     res.json(result);
   } catch (err) {
+    console.error('Scrape failed:', err);
     res.status(500).json({ error: err.message });
   }
-});
-
-app.get('/', (_, res) => res.send('BrokerCheck Scraper Running'));
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Scraper listening on port 3000');
 });
